@@ -8,7 +8,7 @@ PShape model;
 
 // velocidadRotacion indicará cuántos grados queremos rotar el cubo 
 // cada vez que presionamos una tecla (la tecla determinará el eje y sentido de rotación
-float velocidadRotacion = 3;
+float velocidadRotacion = 30;
 
 // se usan para mantener los ángulos de rotación
 float rotaX, rotaY, rotaZ = 0;
@@ -20,6 +20,8 @@ int w = 1600;
 int h = 800;
 float flying = 0;
 float[][] terrain;
+int posX = 0;
+int posY = 0;
 // 
 
 // permitirá activar o desactivar la grilla
@@ -27,7 +29,8 @@ boolean grillaOn = true;
 
 // para uso de la cámara - activación/desactivación y ángulo de rotación
 boolean cameraOn = false;
-float anguloCamera = 0;
+float anguloCameraY = 0;
+float anguloCameraX = 0;
 
 void setup(){
   size(800, 600, P3D);
@@ -53,6 +56,12 @@ void dibujarGrilla(int espacio){
   stroke(96,96,0);
   // *** COMPLETAR ACÁ *** 
   // -- tú código para armar la grilla
+  for (int y = 0; y < 800; y+=espacio) {
+    for (int x = 0; x < 1600; x+=espacio) {
+     line(x,0,x,800);
+     line(0,y,1600,y);
+    }
+  }
   // *** FIN ***
 }
 
@@ -102,7 +111,8 @@ void draw(){
    camera();
    // solo cambi el ángulo Y de la cámara
    // probar cambiar otros ánulos o más de uno a la vez
-   rotateY(radians(anguloCamera));
+   rotateY(radians(anguloCameraY));
+   rotateX(radians(anguloCameraX));
    endCamera();
   } 
   
@@ -129,31 +139,61 @@ void draw(){
       // tener en cuenta que cada vez que se presiona la tecla se incrementará 
       // el ángulo de rotación "rotaX" considerando además la "velocidadRotacion"
       // rotaX y velocidadRotacion son variables ya definidas
+       pushMatrix();
+       translate(width/2,height/2,-150);
+       rotateX(radians(rotaX)*velocidadRotacion);
+       rotaX=rotaX+1;
+       popMatrix();
       // *** FIN ***
     }
     if (key == 'S' || key == 's') {
       // *** COMPLETAR ACÁ ***
       // Si presionamos la tecla S rotaremos el cubo en el eje X en sentido contrario a la tecla W
+       pushMatrix();
+       translate(width/2,height/2,-150);
+       rotateX(radians(-rotaX));
+       rotaX=rotaX-1;
+       popMatrix();
       // *** FIN ***
      }
     if (key == 'A' || key == 'a') {
       // *** COMPLETAR ACÁ ***
       // Si presionamos la tecla A rotaremos el cubo en el eje Y 
+      pushMatrix();
+      translate(width/2,height/2,-150);
+      rotateY(radians(rotaY));
+      rotaY=rotaY+1;
+      popMatrix();
       // *** FIN ***
      }
      if (key == 'D' || key == 'd') {
       // *** COMPLETAR ACÁ ***
       // Si presionamos la tecla D rotaremos el cubo en el eje X en sentido contrario a la tecla A
+       pushMatrix();
+      translate(width/2,height/2,-150);
+      rotateY(radians(-rotaY));
+      rotaY=rotaY-1;
+      popMatrix();
       // *** FIN ***
      }
      if (key == 'Q' || key == 'q') {
       // *** COMPLETAR ACÁ ***
       // Si presionamos la tecla Q rotaremos el cubo en el eje Z 
+       pushMatrix();
+      translate(width/2,height/2,-150);
+      rotateZ(radians(rotaZ));
+      rotaZ=rotaZ+1;
+      popMatrix();
       // *** FIN ***
      }
      if (key == 'E' || key == 'e') {
       // *** COMPLETAR ACÁ ***
       // Si presionamos la tecla E rotaremos el cubo en el eje Z en sentido contrario a la tecla W
+      pushMatrix();
+      translate(width/2,height/2,-150);
+      rotateZ(radians(-rotaZ));
+      rotaZ=rotaZ-1;
+      popMatrix();
       // *** FIN ***
      }
   }
@@ -161,6 +201,9 @@ void draw(){
   // *** COMPLETAR ACÁ ***
   // Acá hay que aplicar las rotaciones en función de los ejes datos por las variables que guardan los ángulos
   // OJO con el orden de rotación
+   rotateX(rotaX/velocidadRotacion);
+  rotateY(rotaY/velocidadRotacion);
+  rotateZ(rotaZ/velocidadRotacion);
   // *** FIN ***
  
   
@@ -187,8 +230,29 @@ void mouseDragged() {
   // *** COMPLETAR ACÁ ***
   // tu código acá
   // lo que tiene que hacer el código es Asignarle un valor a anguloCamera
+ //veo si la pos de el mouse en X esta dentro del frame
+ // si esta veo si es menor a posX
+ //si es menor a posX, el angulo disminuye
+  if(mouseX != 0 && mouseX < posX){
+    anguloCameraX = anguloCameraX-1;
+    //guardo en posX el valor de la posicion del mouse
+    posX = mouseX;
+  }
+  //si es mayor a posX, el angulo aumenta
+  if(mouseX != 0 && mouseX > posX){
+    anguloCameraX = anguloCameraX+1;
+    posX = mouseX;
+  }
+  if(mouseY != 0 && mouseY < posY){
+    anguloCameraY = anguloCameraY-1;
+    posY = mouseY;
+  }
+  if(mouseY != 0 && mouseY > posY){
+    anguloCameraY = anguloCameraY+1;
+     posY = mouseY;
+  }
   
-  // anguloCamera = ....
+  
   
   // de acuerdo al movimiento del mouse debo lograr un movimiento suave al arrastrar
   // tener en cuenta que puedo obtener la posición del mouse con mouseX o con mouseY
@@ -202,5 +266,6 @@ void mouseDragged() {
 // al soltar el mouse RESTEO la cámara
 void mouseReleased() {
   cameraOn = false;
-  anguloCamera = 0; 
+  anguloCameraX = 0; 
+  anguloCameraY = 0;
 }
