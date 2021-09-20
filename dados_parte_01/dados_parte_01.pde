@@ -39,7 +39,8 @@ void setup(){
   // necesita el archivo ojo.mtl (biblioteca de materiales)
   model = loadShape("11665_Airplane_v1_l3.obj");
   // este modo establece como ejes locales el centro del objeto (modelo) importado
-  shapeMode(CORNERS);
+  //shapeMode(CORNERS);
+ 
   
   // definiciones para el terreno 3D
   cols = w / scl;
@@ -84,7 +85,9 @@ void terreno3D(){
   stroke(255);
   noFill();
   translate(width/2, height/2);
+  
   rotateX(PI/3);
+ 
   translate(-w/2, -h/2);
   for (int y = 0; y < rows-1; y++) {
     beginShape(TRIANGLE_STRIP);
@@ -201,7 +204,7 @@ void draw(){
   // *** COMPLETAR ACÁ ***
   // Acá hay que aplicar las rotaciones en función de los ejes datos por las variables que guardan los ángulos
   // OJO con el orden de rotación
-   rotateX(rotaX/velocidadRotacion);
+  rotateX(rotaX/velocidadRotacion);
   rotateY(rotaY/velocidadRotacion);
   rotateZ(rotaZ/velocidadRotacion);
   // *** FIN ***
@@ -210,8 +213,11 @@ void draw(){
   stroke(0,255,0);
   // dibuja una línea guía
   line(0, -100, 0, 0, 100, 0);
+  //esto agregue para la vista del avion
+  rotateX(PI/2);
+  rotateZ(PI/2);
   
-  scale(10);
+  scale(5);
   shape(model);
   
 }
