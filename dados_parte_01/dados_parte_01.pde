@@ -37,7 +37,7 @@ void setup(){
   frameRate(30);
   
   // necesita el archivo ojo.mtl (biblioteca de materiales)
-  model = loadShape("dice.obj");
+  model = loadShape("11665_Airplane_v1_l3.obj");
   // este modo establece como ejes locales el centro del objeto (modelo) importado
   shapeMode(CORNERS);
   
