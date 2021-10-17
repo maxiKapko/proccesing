@@ -59,7 +59,7 @@ void draw()
     
     translate(0,0,20);
     rotate((float)c/100);
-    shape(shape2);
+    shape(shape2,0,0,40,40);
     nya_r.endTransform();
   }
   //left
